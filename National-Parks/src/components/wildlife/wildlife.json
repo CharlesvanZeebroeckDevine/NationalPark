@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_wildlife_wildlife",
+  "info": {
+    "displayName": "Wildlife"
+  },
+  "options": {},
+  "attributes": {
+    "Cover": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
+    },
+    "Name": {
+      "type": "string"
+    }
+  }
+}

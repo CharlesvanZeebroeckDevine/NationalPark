@@ -369,6 +369,36 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiActivityActivity extends Struct.CollectionTypeSchema {
+  collectionName: 'activities';
+  info: {
+    description: '';
+    displayName: 'Activity';
+    pluralName: 'activities';
+    singularName: 'activity';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    Activity: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::activity.activity'
+    > &
+      Schema.Attribute.Private;
+    parks: Schema.Attribute.Relation<'manyToMany', 'api::park.park'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiParkPark extends Struct.CollectionTypeSchema {
   collectionName: 'parks';
   info: {
@@ -381,23 +411,39 @@ export interface ApiParkPark extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    activities: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::activity.activity'
+    >;
+    Area: Schema.Attribute.Integer & Schema.Attribute.Required;
+    Climate: Schema.Attribute.Blocks;
+    Cover: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    > &
+      Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    Description: Schema.Attribute.Text & Schema.Attribute.Required;
+    Flora: Schema.Attribute.Component<'flora.flora', false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::park.park'> &
       Schema.Attribute.Private;
-    Parks: Schema.Attribute.String;
+    Park: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
+    region: Schema.Attribute.Relation<'manyToOne', 'api::region.region'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    Wildlife: Schema.Attribute.Component<'wildlife.wildlife', false>;
   };
 }
 
 export interface ApiRegionRegion extends Struct.CollectionTypeSchema {
   collectionName: 'regions';
   info: {
+    description: '';
     displayName: 'Region';
     pluralName: 'regions';
     singularName: 'region';
@@ -415,8 +461,9 @@ export interface ApiRegionRegion extends Struct.CollectionTypeSchema {
       'api::region.region'
     > &
       Schema.Attribute.Private;
+    parks: Schema.Attribute.Relation<'oneToMany', 'api::park.park'>;
     publishedAt: Schema.Attribute.DateTime;
-    Region: Schema.Attribute.String;
+    Region: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -932,6 +979,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::activity.activity': ApiActivityActivity;
       'api::park.park': ApiParkPark;
       'api::region.region': ApiRegionRegion;
       'plugin::content-releases.release': PluginContentReleasesRelease;

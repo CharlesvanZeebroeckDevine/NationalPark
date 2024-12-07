@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "parks",
+  "info": {
+    "singularName": "park",
+    "pluralName": "parks",
+    "displayName": "Park",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Parks": {
+      "type": "string"
+    }
+  }
+}
